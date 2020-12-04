@@ -12,7 +12,7 @@ class SavingAccount:
             self.customerPin = customerPin
 
             if newAccount:
-                with open('bankSavingsAccounts/savingAccountsinformation','r') as s:
+                with open('savingAccountsinformation','r') as s:
                     a = s.read().split(',')
                 taken = [a[i] for i in range(len(a)) if i % 4 == 1]
 
@@ -20,9 +20,8 @@ class SavingAccount:
                     self.accountNumber = str(randint(1,99999))
                 self.accountNumber = self.accountNumber.zfill(5)
 
-                with open('bankSavingsAccounts/savingAccountsinformation','a') as s:
+                with open('savingAccountsinformation','a') as s:
                     s.write(self.__str__())
-                    print(f'Alright, a new savings account has been formed!\n    {self.__str__()}')
         else:
             print('Please enter a valid starting amount.')
             run = False
@@ -32,42 +31,40 @@ class SavingAccount:
         if LegitimateDWT(depositAmount):
             self.total += round(float(depositAmount),2)
 
-            with open('bankSavingsAccounts/SavingAccountsinformation','r') as t:
+            with open('SavingAccountsinformation','r') as t:
                 lines = t.readlines()
             for item in lines:
                 if self.accountNumber in item:
                     info = item.split(',')
                     lines[lines.index(item)] = self.__str__()
 
-                    print(f'Alright, the money has been deposited!\n    {self.__str__()}')
-
-            with open('bankSavingsAccounts/SavingAccountsinformation','w') as t:
+            with open('SavingAccountsinformation','w') as t:
                 for item in lines:
                     t.write(item)
 
-        else:
-            print('Sorry, please enter a valid deposit amount.' )
+            return 1
+
+        return 0
 
 
     def withdraw(self,withdrawAmount):
         if LegitimateDWT(withdrawAmount):
             self.total -= round(float(withdrawAmount),2)
 
-            with open('bankSavingsAccounts/SavingAccountsinformation','r') as t:
+            with open('SavingAccountsinformation','r') as t:
                 lines = t.readlines()
             for item in lines:
                 if self.accountNumber in item:
                     info = item.split(',')
                     lines[lines.index(item)] = self.__str__()
 
-                    print(f'Alright, the money has been withdrawn!\n    {self.__str__()}')
-
-            with open('bankSavingsAccounts/SavingAccountsinformation','w') as t:
+            with open('SavingAccountsinformation','w') as t:
                 for item in lines:
                     t.write(item)
 
-        else:
-            print('Sorry, please enter a valid withdrawal amount.' )
+            return 1
+
+        return 0
 
 
     def transfer(self,receivingAccount,transferAmount):
@@ -75,28 +72,27 @@ class SavingAccount:
             transferAmount = float(transferAmount)
             if self.total > transferAmount:
                 self.total -= transferAmount
-                receivingAccount.total -= transferAmount
+                receivingAccount.total += transferAmount
 
-                with open('bankSavingsAccounts/SavingAccountsinformation','r') as t:
+                with open('SavingAccountsinformation','r') as t:
                     lines = t.readlines()
                 for item in lines:
                     if self.accountNumber in item:
                         info = item.split(',')
                         lines[lines.index(item)] = self.__str__()
 
-                    if receivingAccount.accountNumber in item:
+                    elif receivingAccount.accountNumber in item:
                         info = item.split(',')
-                        lines[lines.index(item)] = self.__str__()
+                        lines[lines.index(item)] = receivingAccount.__str__()
 
-                        print(f'Alright, the money has been transferred!\
-                            \n  Providing account: {self.__str__()}\n   Receiving account: {receivingAccount.__str__()}')
-
-                with open('bankSavingsAccounts/SavingAccountsinformation','w') as t:
+                with open('SavingAccountsinformation','w') as t:
                     for item in lines:
                         t.write(item)
 
-        else:
-            print('Sorry, please enter a valid transfer amount.' )
+                return 1
+
+            
+        return 0
 
 
     def __str__(self):

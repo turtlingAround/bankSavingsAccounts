@@ -67,7 +67,7 @@ class SavingAccount:
 
 
     def transfer(self,receivingAccount,transferAmount):
-        
+        pass
     def passYear(self,currentDate):
         self.total += self.total * self.interestRate / 100
 

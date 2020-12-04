@@ -13,7 +13,7 @@ while not pinFound:
         pinFound = True
 
     else:
-        with open('bankSavingsAccounts/customerInformation') as c:
+        with open('customerInformation') as c:
             customers = c.read().split('\n')
         
         for item in customers:
@@ -22,7 +22,7 @@ while not pinFound:
                     customerInfo = item.split('|')
                     customerAccountInfo = customerInfo[0].split(',')
                     accountNumbers = customerInfo[1:]
-                    with open('bankSavingsAccounts/savingAccountsinformation') as s:
+                    with open('savingAccountsinformation') as s:
                         l = s.read().split('\n')
                     accounts = []
                     for account in accountNumbers:
@@ -58,12 +58,19 @@ while run:
         for account in accounts:
             if accountNumber in account:
                 balance = account.split(',')[2]
+                z = account
 
         if balance:
             balance = float(balance)
             depositAccount = SavingAccount(a.name,balance,a.pin,accountNumber,False)
             depositAmount = input('Alright, please enter the deposit amount (in this format => $$.¢¢): ')
-            depositAccount.deposit(depositAmount)
+            result = depositAccount.deposit(depositAmount)
+            if result:
+                balance += depositAmount
+                accounts[accounts.index(z)].split(',')[2] = balance
+                
+
+
         
         else:
             print('Please enter a valid account number.')
@@ -75,18 +82,60 @@ while run:
         for account in accounts:
             if accountNumber in account:
                 balance = account.split(',')[2]
+                z = account
 
         if balance:
             balance = float(balance)
             withdrawAccount = SavingAccount(a.name,balance,a.pin,accountNumber,False)
             withdrawAmount = input('Alright, please enter the withdraw amount (in this format => $$.¢¢): ')
-            withdrawAccount.withdraw(withdrawAmount)
+            result = withdrawAccount.withdraw(withdrawAmount)
+            if result:
+                balance -= withdrawAmount
+                accounts[accounts.index(z)].split(',')[2] = balance
         
         else:
             print('Please enter a valid account number.')
 
-
     elif option == 'D':
+        givingNumber = input('Please enter the number of the account you want to transfer from: ')
+        receivingNumber = input('Please enter the number of the account you want to transfer to: ')
+        givingBalance = ''
+        receivingBalance = ''
+        for account in accounts:
+            if givingNumber in account:
+                givingBalance = account.split(',')[2]
+                givingZ = account
+            elif receivingNumber in account:
+                receivingBalance = account.split(',')[2]
+                receivingZ = account
+
+        if givingBalance and receivingBalance:
+            givingBalance,receivingBalance = float(givingBalance),float(receivingBalance)
+            givingAccount = SavingAccount(a.name,givingBalance,a.pin,givingNumber,False)
+            receivingAccount = SavingAccount(a.name,receivingBalance,a.pin,receivingNumber,False)
+            transferAmount = input('Alright, please enter the transfer amount (in this format => $$.¢¢): ')
+            result = givingAccount.transfer(receivingAccount,transferAmount)
+            if result:
+                givingBalance -= transferAmount
+                accounts[accounts.index(givingZ)].split(',')[2] = givingBalance
+
+                receivingBalance += transferAmount
+                accounts[accounts.index(receivingZ)].split(',')[2] = receivingBalance
+        
+        else:
+            print('Please enter a valid account number.')
+
+     
+    elif option == '':
+        print('Thanks! Have a nice day.')
+        run = False
+
+    
+    else:
+        print('Please enter a valid option.')
+
+
+        '''elif option == 'D':
         givingNumber = input('Please enter the number of the account you want to transfer from: ')
         receivingNumber = input('Please enter the number of the account you want to transfer to: ')
         givingBalance = ''
@@ -105,12 +154,5 @@ while run:
         
         else:
             print('Please enter valid account numbers.')
-
-            
-    elif option == '':
-        print('Thanks! Have a nice day.')
-        run = False
-
-    
-    else:
-        print('Please enter a valid option.')
+'''
+       

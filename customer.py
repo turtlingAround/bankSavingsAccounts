@@ -7,7 +7,7 @@ class Customer:
         self.pin = pin
 
         if newCustomer:
-            with open('bankSavingsAccounts/customerInformation','r') as s:
+            with open('customerInformation','r') as s:
                 a = s.read().split(',')
             taken = [a[i] for i in range(len(a)) if i % 3 == 1]
 
@@ -15,17 +15,15 @@ class Customer:
                 self.pin = str(randint(1,999999))
             self.pin = self.pin.zfill(6)
 
-            with open('bankSavingsAccounts/customerInformation','a') as s:
+            with open('customerInformation','a') as s:
                 s.write(self.__str__())
-            print(f'Alright, a new customer account has been formed!\
-                \n   name: {self.name}\n   pin: {self.pin}\
-                    \nNote: Your pin is very important. Do not share it with anybody.\n')
+
                 
 
     def newAccount(self,startingMoney):
         a = SavingAccount(self.name,startingMoney,self.pin)
         try:
-            with open('bankSavingsAccounts/customerInformation','r') as s:
+            with open('customerInformation','r') as s:
                 lines = s.read().split('\n')
                 lines = [item for item in lines if item]
             
@@ -33,7 +31,7 @@ class Customer:
                 if self.pin in item:
                     lines[lines.index(item)] += f'|{a.accountNumber}'
 
-            with open('bankSavingsAccounts/customerInformation','w') as s:
+            with open('customerInformation','w') as s:
                 for item in lines:
                     s.write(item)
                     s.write('\n')
