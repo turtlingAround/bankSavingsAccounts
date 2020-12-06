@@ -1,8 +1,7 @@
-from savingaccount2 import SavingAccount
-from customer import Customer
+from tkinter import *
+root= Tk('600x600')
 
-a = Customer('bob')
-c = a.newAccount(10)
-a.newAccount(325)
+message = Message(text='wrgnongown')
+message.pack()
 
-b = Customer('idhogew[]')
+root.mainloop()

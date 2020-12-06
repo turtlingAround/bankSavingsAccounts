@@ -14,6 +14,14 @@ def newCustomer():
         OS.pack()
         return
 
+    def new():
+        name= NCentry.get()
+        a = Customer(name)
+        accounts = []
+        NCmessage = messagebox.showinfo('Confirmation',f'Alright, a new customer account has been formed!\n   name: {a.name}\n   pin: {a.pin}\nNote: Your pin is very important. Do not share it with anybody.\n')
+        return a, accounts
+
+
     NClabel= Label(NC,text='Please register by entering your name.')
     NClabel.pack()
 
@@ -24,13 +32,5 @@ def newCustomer():
     NCquit = Button(text='Back', command=back)
     NCquit.pack()
 
-
-    def new():
-        name= NCentry.get()
-        a = Customer(name)
-        accounts = []
-        NCmessage = messagebox.showinfo('Confirmation',f'Alright, a new customer account has been formed!\n   name: {a.name}\n   pin: {a.pin}\nNote: Your pin is very important. Do not share it with anybody.\n')
-
-    NCbutton = Button(NC, text='Enter', command=new)
+    NCbutton = Button(text='Enter', command=new)
     NCbutton.pack()
-    return a, accounts
