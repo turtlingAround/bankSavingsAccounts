@@ -1,13 +1,56 @@
 from tkinter import *
-from tkinter import messagebox
 from savingaccount2 import SavingAccount
 from customer import Customer
 
+#Choosing Screen
+def choosingScreen(a, accounts):
+    a, accounts = a, accounts
+    a = openingScreen()
+    OS.pack_forget()
 
-root = Tk('600x600')
+    #createAcc
+    def option1():
+        def createNotification():
+            createMessage = messagebox.showinfo(title='Confirmation',message=f'Alright, a new savings account has been formed!')
+            createMessage.pack()
+        
+        CS.pack_forget()
 
-from time import sleep
+        create = Frame()
+        create.pack()
 
+        createLabel = Label(create, text= 'Alright, please enter the starting amount of money (in this format => $$.¢¢):')
+        createLabel.pack()
+
+        createEntry = Entry(create)
+        createEntry.insert(END,'Starting money')
+        createEntry.pack()
+
+        createButton = Button(create,text = 'Enter',highlightbackground = 'green',padx=5, pady=5)
+        createButton.pack()
+
+    def option1():
+        print('328752057')
+    CS = Frame()
+    CS.pack()
+
+    create = PhotoImage(file='create.png')
+    deposit = PhotoImage(file='deposit.png')
+    withdraw = PhotoImage(file='withdraw.png')
+    transfer = PhotoImage(file='transfer.png')
+
+    CSlabel = Label(CS, text = f'Hello there. Please choose one of the options below: ')
+    CSlabel.grid(columnspan = 2)
+
+    CSop1 = Button(CS,text='Create Account',image=create,compound=TOP, command= option1).grid(row=1, column=0)
+
+    CSop2 = Button(CS,text='Deposit Money',image=deposit,compound=TOP).grid(row=1, column=1)
+
+    CSop3 = Button(CS,text='Withdraw Money',image=withdraw,compound=TOP).grid(row=2, column=0)
+
+    CSop4 = Button(CS,text='Transfer Money',image=transfer,compound=TOP).grid(row=2, column=1)
+
+#openingScreen
 def openingScreen():
     global OS
     OS = Frame()
@@ -68,7 +111,7 @@ def openingScreen():
 
                     a = Customer(customerAccountInfo[0],customerAccountInfo[1],False)
                     OS.pack_forget()
-                    return a, accounts
+                    choosingScreen(a, accounts)
 
             except IndexError:
                 OSinvalidPIN = Label(OS,text = 'Sorry, please enter a valid pin.',fg = 'red')
@@ -91,10 +134,8 @@ def openingScreen():
     OSnoAcc = Button(OS,text = '\n\nOr if you don\'t have a customer account, press here".',command= NCframeAll)
     OSnoAcc.grid(row = 4,column = 0, sticky = EW)
 
+root = Tk('600x600')
+choosingScreen(1,2)
 
-    
-
-
-openingScreen()
-
+#ChoosingScreen()
 root.mainloop()
